@@ -59,7 +59,7 @@ namespace DentalClinicManagementSystemApp
 
             }else if (display.Equals("doctorsBtn"))
             {
-                query = "SELECT*FROM patient_Table";
+               // query = "SELECT*FROM patient_Table";
 
             }else if (display.Equals("appointmentsBtn"))
             {
