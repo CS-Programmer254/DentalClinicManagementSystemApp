@@ -162,7 +162,7 @@
             this.panel2.ForeColor = System.Drawing.Color.LawnGreen;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1191, 53);
+            this.panel2.Size = new System.Drawing.Size(1329, 53);
             this.panel2.TabIndex = 1;
             // 
             // label2
@@ -262,7 +262,7 @@
             this.appointmentsBtn.TabIndex = 10;
             this.appointmentsBtn.Text = "Bookings";
             this.appointmentsBtn.UseVisualStyleBackColor = false;
-            this.appointmentsBtn.Click += new System.EventHandler(this.appointmentsBtn_Click);
+            this.appointmentsBtn.Click += new System.EventHandler(this.appointmentsBtn_ClickAsync);
             // 
             // insurancesBtn
             // 
@@ -280,7 +280,7 @@
             this.insurancesBtn.TabIndex = 11;
             this.insurancesBtn.Text = "Insurances";
             this.insurancesBtn.UseVisualStyleBackColor = false;
-            this.insurancesBtn.Click += new System.EventHandler(this.insurancesBtn_Click);
+            this.insurancesBtn.Click += new System.EventHandler(this.insurancesBtn_ClickAsync);
             // 
             // billingBtn
             // 
@@ -298,7 +298,7 @@
             this.billingBtn.TabIndex = 12;
             this.billingBtn.Text = "Billings";
             this.billingBtn.UseVisualStyleBackColor = false;
-            this.billingBtn.Click += new System.EventHandler(this.billingBtn_Click);
+            this.billingBtn.Click += new System.EventHandler(this.billingBtn_ClickAsync);
             // 
             // groupBox
             // 
@@ -378,7 +378,7 @@
             this.Name = "Dashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Dashboard";
-            this.Load += new System.EventHandler(this.Dashboard_Load);
+            this.Load += new System.EventHandler(this.Dashboard_LoadAsync);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
