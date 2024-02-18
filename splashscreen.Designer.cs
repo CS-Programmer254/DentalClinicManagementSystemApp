@@ -1,6 +1,6 @@
 ﻿namespace DentalClinicManagementSystemApp
 {
-    partial class splashscreen
+    partial class Splashscreen
     {
         /// <summary>
         /// Required designer variable.

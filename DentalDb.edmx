@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DentalClinicDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DentalClinicDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="admin_Table">
           <Key>
             <PropertyRef Name="adminID" />
@@ -92,6 +92,18 @@ warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a 
           <Property Name="insuranceID" Type="int" Nullable="false" />
           <Property Name="residence" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_appointment_Table_appointment_Table">
+          <End Role="appointment_Table" Type="Self.appointment_Table" Multiplicity="1" />
+          <End Role="appointment_Table1" Type="Self.appointment_Table" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="appointment_Table">
+              <PropertyRef Name="appointmentID" />
+            </Principal>
+            <Dependent Role="appointment_Table1">
+              <PropertyRef Name="appointmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DentalClinicDbModelStoreContainer">
           <EntitySet Name="admin_Table" EntityType="Self.admin_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="appointment_Table" EntityType="Self.appointment_Table" Schema="dbo" store:Type="Tables" />
@@ -116,9 +128,12 @@ warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a 
     [patient_Table].[residence] AS [residence]
     FROM [dbo].[patient_Table] AS [patient_Table]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_appointment_Table_appointment_Table" Association="Self.FK_appointment_Table_appointment_Table">
+            <End Role="appointment_Table" EntitySet="appointment_Table" />
+            <End Role="appointment_Table1" EntitySet="appointment_Table" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DentalClinicDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -146,6 +161,8 @@ warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a 
           <Property Name="appointmentStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="dentistStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="patientTel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="appointment_Table1" Relationship="DentalClinicDbModel.FK_appointment_Table_appointment_Table" FromRole="appointment_Table" ToRole="appointment_Table1" />
+          <NavigationProperty Name="appointment_Table2" Relationship="DentalClinicDbModel.FK_appointment_Table_appointment_Table" FromRole="appointment_Table1" ToRole="appointment_Table" />
         </EntityType>
         <EntityType Name="dentalProcedure_Table">
           <Key>
@@ -213,7 +230,23 @@ warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a 
           <EntitySet Name="diagnosis_Table" EntityType="Self.diagnosis_Table" />
           <EntitySet Name="insurance_Table" EntityType="Self.insurance_Table" />
           <EntitySet Name="patient_Table" EntityType="Self.patient_Table" />
+          <AssociationSet Name="FK_appointment_Table_appointment_Table" Association="DentalClinicDbModel.FK_appointment_Table_appointment_Table">
+            <End Role="appointment_Table" EntitySet="appointment_Table" />
+            <End Role="appointment_Table1" EntitySet="appointment_Table" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_appointment_Table_appointment_Table">
+          <End Type="DentalClinicDbModel.appointment_Table" Role="appointment_Table" Multiplicity="1" />
+          <End Type="DentalClinicDbModel.appointment_Table" Role="appointment_Table1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="appointment_Table">
+              <PropertyRef Name="appointmentID" />
+            </Principal>
+            <Dependent Role="appointment_Table1">
+              <PropertyRef Name="appointmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

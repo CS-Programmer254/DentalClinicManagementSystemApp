@@ -24,5 +24,8 @@ namespace DentalClinicManagementSystemApp
         public string appointmentStatus { get; set; }
         public string dentistStatus { get; set; }
         public string patientTel { get; set; }
+    
+        public virtual appointment_Table appointment_Table1 { get; set; }
+        public virtual appointment_Table appointment_Table2 { get; set; }
     }
 }

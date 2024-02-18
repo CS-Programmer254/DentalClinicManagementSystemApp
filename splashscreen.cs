@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DentalClinicManagementSystemApp
 {
-    public partial class splashscreen : Form
+    public partial class Splashscreen : Form
     {
-        public splashscreen()
+        public Splashscreen()
         {
             InitializeComponent();
         }
