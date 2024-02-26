@@ -164,6 +164,7 @@
             this.ClearPatientBtn.TabIndex = 17;
             this.ClearPatientBtn.Text = "Clear";
             this.ClearPatientBtn.UseVisualStyleBackColor = false;
+            this.ClearPatientBtn.Click += new System.EventHandler(this.ClearPatientBtn_Click);
             // 
             // cbInsurance
             // 

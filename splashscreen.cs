@@ -23,8 +23,8 @@ namespace DentalClinicManagementSystemApp
             if (countLabel.Text=="100")
             {
                 this.Hide();
-                Dashboard dashboard = new Dashboard();
-                dashboard.Show();
+                new AdminLogin().Show();
+               
             }
         }
 

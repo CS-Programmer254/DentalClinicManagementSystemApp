@@ -16,16 +16,16 @@ namespace DentalClinicManagementSystemApp
             if (phoneNumber != null) return Regex.IsMatch(phoneNumber,PhoneRegexNumber);
             else return false;
         }
-        public static string TransformPhoneNumber(string trimmedTelephone,string tbTelephoneText)
+        public static string TransformPhoneNumber(string tbTelephoneText)
         {
             string telephone;
-            if (trimmedTelephone.Length == 10)
+            if (tbTelephoneText.Length == 10)
             {
                 string pattern = @"^0(7|1)";
-                if (Regex.IsMatch(trimmedTelephone, pattern))
+                if (Regex.IsMatch(tbTelephoneText, pattern))
                 {
                     // Remove the leading "0"
-                    trimmedTelephone = Regex.Replace(trimmedTelephone, pattern, match =>
+                    tbTelephoneText = Regex.Replace(tbTelephoneText, pattern, match =>
                     {
                         if (match.Value == "01")
                         {
@@ -41,7 +41,7 @@ namespace DentalClinicManagementSystemApp
                         }
                     });
                 }
-                telephone = "+254" + trimmedTelephone;
+                telephone = "+254" + tbTelephoneText;
                 return telephone;
             }
             else
@@ -54,3 +54,4 @@ namespace DentalClinicManagementSystemApp
         }
     }
 }
+ 

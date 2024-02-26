@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,22 +21,50 @@ namespace DentalClinicManagementSystemApp
     {
         private readonly DentalClinicDbEntities _dentalClinicDbEntities;
         public int fileCount;
+        private bool isEditMode;
+        public string fileToUpdate;
         public NewPatientForm()
         {
             InitializeComponent();
             _dentalClinicDbEntities = new DentalClinicDbEntities();
-           // LoadFileNoCombox();
+            isEditMode = false; 
+        }
+
+        public NewPatientForm(patient_Table patientToEdit)
+        {
+            InitializeComponent();
+            _dentalClinicDbEntities = new DentalClinicDbEntities();
+            this.Text = "Edit Patient Details";
+            this.ClearPatientBtn.Visible= false;
+            SavePatientBtn.Text = "Edit";
+            fileToUpdate = patientToEdit.patientID.ToString();
+            PopulateEditFields(patientToEdit);
+            isEditMode = true;
+        }
+
+        private void PopulateEditFields(patient_Table patient)
+        {
+            tbPatientName.Text = patient.patientName;
+            tbEmail.Text=patient.email;
+            tbTelephone.Text = patient.patientTel;
+            tbResidence.Text = patient.residence;
+            cbGender.Text = patient.gender;
+            var insuranceName= _dentalClinicDbEntities.insurance_Table
+                   .Where(i => i.insuranceID==patient.insuranceID)
+                   .Select(i => i.insuranceName)
+                   .FirstOrDefault();
+            cbInsurance.Text = insuranceName;
+
         }
 
         private void SavePatientBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                var telephone= tbTelephone.Text;
                 var fileNo=cbFileNo.Text;
                 var patientName=tbPatientName.Text;
                 var email=tbEmail.Text;
-                telephone=ValidatePhoneNumber.TransformPhoneNumber(tbTelephone.Text.Trim(), telephone); 
+                var telephone = ValidatePhoneNumber.TransformPhoneNumber(tbTelephone.Text.Trim());
                 var insurance = cbInsurance.Text;
                 var residence = tbResidence.Text;
                 var gender = cbGender.Text;
@@ -48,45 +79,75 @@ namespace DentalClinicManagementSystemApp
                     return;
                 }
 
-                if(!ValidatePhoneNumber.IsValidPhoneNumber(telephone))
+                if (!ValidatePhoneNumber.IsValidPhoneNumber(telephone))
                 {
                     MessageBox.Show($"Invalid PhoneNumber {telephone}");
                     return;
                 }
-                
-                if(!ValidateEmailAddress.IsValidEmail(email))
+
+                if (!ValidateEmailAddress.IsValidEmail(email))
                 {
                     MessageBox.Show($"{email.ToUpperInvariant()} is not a valid email address.Please enter a valid email");
                     return;
                 }
-                
+
+                //var insuranceID = _dentalClinicDbEntities.insurance_Table
+                //    .Where(i => string.Equals(i.insuranceName, insurance, StringComparison.OrdinalIgnoreCase))
+                //    .Select(i => i.insuranceID)
+                //    .FirstOrDefault();
+
                 var insuranceID = _dentalClinicDbEntities.insurance_Table
-                    .Where(i => string.Equals(i.insuranceName, insurance, StringComparison.OrdinalIgnoreCase))
+                    .Where(i =>i.insuranceName==insurance)
                     .Select(i => i.insuranceID)
                     .FirstOrDefault();
 
-                var newPatientData = new patient_Table()
+                var newPatientData = new patient_Table
                 {
                     patientID = fileNo,
                     patientName = patientName,
-                    gender =gender,
+                    gender = gender,
                     email = email,
-                    patientTel =telephone,
+                    patientTel = telephone,
                     registrationDate = DateTime.Now,
-                    insuranceID =insuranceID,
-                    residence=residence
-
+                    insuranceID = insuranceID,
+                    residence = residence
                 };
 
-                _dentalClinicDbEntities.patient_Table.Add(newPatientData);
-                _dentalClinicDbEntities.SaveChanges();
-                MessageBox.Show("Data saved successfully.");
-                MessageBox.Show($"Patient Registered successfully as :{patientName} with file number {fileNo}");
+                if (newPatientData !=null)
+                {
+                    _dentalClinicDbEntities.patient_Table.AddOrUpdate(newPatientData);
+                    _dentalClinicDbEntities.SaveChanges();
+                   
+                    if (isEditMode)
+                    {
+                        MessageBox.Show($"Patient Updated successfully as :{patientName} with file number {fileNo}");
+                        this.Close();
+                        new Dashboard().Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Patient Registered successfully as :{patientName} with file number {fileNo}");
+                        this.Close();
+                        new Dashboard().Show();
+                    }
+                }
+             
+               
 
             }
-            catch (Exception ex)
+            catch (DbEntityValidationException ex)
             {
-                MessageBox.Show(ex.Message);
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+               
             }
 
         }
@@ -127,7 +188,7 @@ namespace DentalClinicManagementSystemApp
             try
             {
                 ComboxItem comboxItem = new ComboxItem();
-                var fileNo = "ACDC " + Convert.ToString(GenerateFileNo());
+                var fileNo = (!isEditMode) ? "ACDC " + Convert.ToString(GenerateFileNo()) :fileToUpdate;
                 comboxItem.Text =fileNo;
                 comboxItem.Value =fileNo;
                 cbFileNo.Items.Add(comboxItem);
@@ -145,8 +206,12 @@ namespace DentalClinicManagementSystemApp
         {
             try
             {
-                fileCount = _dentalClinicDbEntities.insurance_Table.ToList().Count; 
-                return (fileCount + 1);
+               //var fileCount = _dentalClinicDbEntities.patient_Table.ToList().Count; 
+               // fileCount = Convert.ToInt32(fileCount)+1;
+               // return fileCount;
+               
+               var fileCount = Convert.ToInt32(_dentalClinicDbEntities.patient_Table.ToList().Count)+1;
+                return fileCount;
 
             }
             catch (Exception)
@@ -156,5 +221,16 @@ namespace DentalClinicManagementSystemApp
             }
         }
 
+        private void ClearPatientBtn_Click(object sender, EventArgs e)
+        {
+            cbFileNo.Text = "";
+            tbPatientName.Text ="";
+            tbEmail.Text = "";
+            tbTelephone.Text ="";
+            tbResidence.Text ="";
+            cbGender.Text ="";
+            cbInsurance.Text = "";
+
+        }
     }
 }

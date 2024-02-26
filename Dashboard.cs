@@ -11,7 +11,7 @@ namespace DentalClinicManagementSystemApp
     public partial class Dashboard : Form
     {
         private readonly DentalClinicDbEntities _dentalClinicDbEntities;
-        NewPatientForm newPatient;
+        NewPatientForm newPatientForm;
         BookAppointment bookAppointment;
         public string NavigationButton { get; set; }
         public Dashboard()
@@ -219,8 +219,8 @@ namespace DentalClinicManagementSystemApp
                     bookAppointment.Close();
 
                 }
-                newPatient = new NewPatientForm();
-                newPatient.Show();
+                newPatientForm = new NewPatientForm();
+                newPatientForm.Show();
             }
             catch (Exception)
             {
@@ -233,11 +233,12 @@ namespace DentalClinicManagementSystemApp
         {
             try
             {
-                if (newPatient != null)
+                if (newPatientForm != null)
                 {
-                    newPatient.Close();
+                    newPatientForm.Close();
 
                 }
+                this.Close();
                 bookAppointment = new BookAppointment();
                 bookAppointment.Show();
 
@@ -246,6 +247,50 @@ namespace DentalClinicManagementSystemApp
             {
 
                 throw;
+            }
+        }
+
+        private void editBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                var selectedRowID = (string)DataGridView.SelectedRows[0].Cells["FileNo"].Value;
+                var patient = _dentalClinicDbEntities.patient_Table.FirstOrDefault(p => p.patientID == selectedRowID);
+                this.Close();
+                newPatientForm = new NewPatientForm(patient);
+                newPatientForm.Show();
+              
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"You have not selected any row\n{ex.Message}");
+            }
+
+
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRowID = (string)DataGridView.SelectedRows[0].Cells["FileNo"].Value;
+                var patient = _dentalClinicDbEntities.patient_Table.FirstOrDefault(p => p.patientID == selectedRowID);
+                if (patient != null)
+                {
+                    _dentalClinicDbEntities.patient_Table.Remove(patient);
+                    _dentalClinicDbEntities.SaveChanges();
+                    this.Close();
+                    new Dashboard().Show();
+                    MessageBox.Show("Patient Deleted Successfully");
+                }
+               
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"Please select a row to delete.\n{ex.Message}");
             }
         }
     }

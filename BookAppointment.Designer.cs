@@ -28,67 +28,77 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookAppointment));
+            this.tbPatientName = new System.Windows.Forms.TextBox();
+            this.tbTelephone = new System.Windows.Forms.TextBox();
+            this.cbDentist = new System.Windows.Forms.ComboBox();
+            this.cbAppointmentTime = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.cbDentalProcedure = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.dataGridViewAppointments = new System.Windows.Forms.DataGridView();
+            this.tbSearch = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnBook = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnCancelAppointment = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
+            this.cbAppointmentDate = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppointments)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // tbPatientName
             // 
-            this.textBox1.Location = new System.Drawing.Point(195, 22);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(290, 26);
-            this.textBox1.TabIndex = 0;
+            this.tbPatientName.Location = new System.Drawing.Point(195, 22);
+            this.tbPatientName.Name = "tbPatientName";
+            this.tbPatientName.Size = new System.Drawing.Size(290, 26);
+            this.tbPatientName.TabIndex = 0;
             // 
-            // textBox3
+            // tbTelephone
             // 
-            this.textBox3.Location = new System.Drawing.Point(195, 123);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(290, 26);
-            this.textBox3.TabIndex = 2;
+            this.tbTelephone.Location = new System.Drawing.Point(195, 123);
+            this.tbTelephone.Name = "tbTelephone";
+            this.tbTelephone.Size = new System.Drawing.Size(290, 26);
+            this.tbTelephone.TabIndex = 2;
             // 
-            // comboBox1
+            // cbDentist
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(195, 170);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(290, 28);
-            this.comboBox1.TabIndex = 3;
+            this.cbDentist.FormattingEnabled = true;
+            this.cbDentist.Location = new System.Drawing.Point(195, 170);
+            this.cbDentist.Name = "cbDentist";
+            this.cbDentist.Size = new System.Drawing.Size(290, 28);
+            this.cbDentist.TabIndex = 3;
             // 
-            // comboBox2
+            // cbAppointmentTime
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(745, 22);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(263, 28);
-            this.comboBox2.TabIndex = 4;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(745, 73);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(263, 28);
-            this.comboBox3.TabIndex = 5;
+            this.cbAppointmentTime.FormattingEnabled = true;
+            this.cbAppointmentTime.Items.AddRange(new object[] {
+            "08.00 a.m",
+            "08.30 a.m",
+            "09.00 a.m",
+            "10.00 a.m",
+            "10.30 a.m",
+            "11.30 a.m",
+            "12.00 p.m",
+            "12.30 p.m",
+            "1.00 p.m",
+            "1.30 p.m",
+            "2.00 p.m",
+            "2.30 p.m",
+            "3.00 p.m",
+            "3.30 p.m",
+            "4.00 p.m"});
+            this.cbAppointmentTime.Location = new System.Drawing.Point(745, 73);
+            this.cbAppointmentTime.Name = "cbAppointmentTime";
+            this.cbAppointmentTime.Size = new System.Drawing.Size(263, 28);
+            this.cbAppointmentTime.TabIndex = 5;
             // 
             // label1
             // 
@@ -108,13 +118,13 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "Dental Procedure:";
             // 
-            // comboBox4
+            // cbDentalProcedure
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(195, 73);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(290, 28);
-            this.comboBox4.TabIndex = 8;
+            this.cbDentalProcedure.FormattingEnabled = true;
+            this.cbDentalProcedure.Location = new System.Drawing.Point(195, 73);
+            this.cbDentalProcedure.Name = "cbDentalProcedure";
+            this.cbDentalProcedure.Size = new System.Drawing.Size(290, 28);
+            this.cbDentalProcedure.TabIndex = 8;
             // 
             // label3
             // 
@@ -154,7 +164,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Controls.Add(this.dataGridViewAppointments);
             this.groupBox1.Location = new System.Drawing.Point(28, 224);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(980, 271);
@@ -162,12 +172,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Recent Appointments";
             // 
-            // textBox2
+            // dataGridViewAppointments
             // 
-            this.textBox2.Location = new System.Drawing.Point(745, 167);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(263, 26);
-            this.textBox2.TabIndex = 14;
+            this.dataGridViewAppointments.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridViewAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewAppointments.Location = new System.Drawing.Point(6, 25);
+            this.dataGridViewAppointments.Name = "dataGridViewAppointments";
+            this.dataGridViewAppointments.RowHeadersWidth = 62;
+            this.dataGridViewAppointments.RowTemplate.Height = 28;
+            this.dataGridViewAppointments.Size = new System.Drawing.Size(968, 230);
+            this.dataGridViewAppointments.TabIndex = 0;
+            // 
+            // tbSearch
+            // 
+            this.tbSearch.Location = new System.Drawing.Point(745, 167);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(263, 26);
+            this.tbSearch.TabIndex = 14;
             // 
             // label7
             // 
@@ -178,64 +199,77 @@
             this.label7.TabIndex = 15;
             this.label7.Text = "Search:";
             // 
-            // button1
+            // btnBook
             // 
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.button1.Location = new System.Drawing.Point(28, 501);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 39);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Book";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnBook.BackColor = System.Drawing.Color.White;
+            this.btnBook.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBook.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btnBook.Location = new System.Drawing.Point(28, 501);
+            this.btnBook.Name = "btnBook";
+            this.btnBook.Size = new System.Drawing.Size(75, 39);
+            this.btnBook.TabIndex = 16;
+            this.btnBook.Text = "Book";
+            this.btnBook.UseVisualStyleBackColor = false;
+            this.btnBook.Click += new System.EventHandler(this.btnBook_Click);
             // 
-            // button2
+            // btnEdit
             // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.button2.Location = new System.Drawing.Point(195, 501);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 39);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Edit";
-            this.button2.UseVisualStyleBackColor = false;
+            this.btnEdit.BackColor = System.Drawing.Color.White;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.btnEdit.Location = new System.Drawing.Point(195, 501);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 39);
+            this.btnEdit.TabIndex = 17;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = false;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
-            // button3
+            // btnDelete
             // 
-            this.button3.BackColor = System.Drawing.Color.White;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(363, 501);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 39);
-            this.button3.TabIndex = 17;
-            this.button3.Text = "Delete";
-            this.button3.UseVisualStyleBackColor = false;
+            this.btnDelete.BackColor = System.Drawing.Color.White;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.ForeColor = System.Drawing.Color.Red;
+            this.btnDelete.Location = new System.Drawing.Point(363, 501);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 39);
+            this.btnDelete.TabIndex = 17;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = false;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // button4
+            // btnCancelAppointment
             // 
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button4.Location = new System.Drawing.Point(513, 501);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 39);
-            this.button4.TabIndex = 18;
-            this.button4.Text = "Cancel";
-            this.button4.UseVisualStyleBackColor = false;
+            this.btnCancelAppointment.BackColor = System.Drawing.Color.White;
+            this.btnCancelAppointment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelAppointment.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.btnCancelAppointment.Location = new System.Drawing.Point(513, 501);
+            this.btnCancelAppointment.Name = "btnCancelAppointment";
+            this.btnCancelAppointment.Size = new System.Drawing.Size(75, 39);
+            this.btnCancelAppointment.TabIndex = 18;
+            this.btnCancelAppointment.Text = "Cancel";
+            this.btnCancelAppointment.UseVisualStyleBackColor = false;
+            this.btnCancelAppointment.Click += new System.EventHandler(this.btnCancelAppointment_Click);
             // 
-            // dataGridView1
+            // btnBack
             // 
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 25);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 62;
-            this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(968, 230);
-            this.dataGridView1.TabIndex = 0;
+            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.btnBack.ForeColor = System.Drawing.Color.Lime;
+            this.btnBack.Location = new System.Drawing.Point(789, 501);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(219, 38);
+            this.btnBack.TabIndex = 19;
+            this.btnBack.Text = "Back To Dashboard";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // cbAppointmentDate
+            // 
+            this.cbAppointmentDate.Location = new System.Drawing.Point(745, 22);
+            this.cbAppointmentDate.Name = "cbAppointmentDate";
+            this.cbAppointmentDate.Size = new System.Drawing.Size(263, 26);
+            this.cbAppointmentDate.TabIndex = 20;
             // 
             // BookAppointment
             // 
@@ -243,29 +277,34 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CornflowerBlue;
             this.ClientSize = new System.Drawing.Size(1037, 552);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.cbAppointmentDate);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.btnCancelAppointment);
+            this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.btnEdit);
+            this.Controls.Add(this.btnBook);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBox4);
+            this.Controls.Add(this.cbDentalProcedure);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.cbAppointmentTime);
+            this.Controls.Add(this.cbDentist);
+            this.Controls.Add(this.tbTelephone);
+            this.Controls.Add(this.tbPatientName);
+            this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BookAppointment";
             this.Text = "Book Appointment";
+            this.Load += new System.EventHandler(this.BookAppointment_Load);
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppointments)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,25 +312,26 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TextBox tbPatientName;
+        private System.Windows.Forms.TextBox tbTelephone;
+        private System.Windows.Forms.ComboBox cbDentist;
+        private System.Windows.Forms.ComboBox cbAppointmentTime;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cbDentalProcedure;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbSearch;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnBook;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnCancelAppointment;
+        private System.Windows.Forms.DataGridView dataGridViewAppointments;
+        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.DateTimePicker cbAppointmentDate;
     }
 }

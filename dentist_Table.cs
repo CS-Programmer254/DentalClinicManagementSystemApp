@@ -14,12 +14,11 @@ namespace DentalClinicManagementSystemApp
     
     public partial class dentist_Table
     {
-        public int dentistID { get; set; }
+        public string dentistID { get; set; }
         public string dentistName { get; set; }
         public string dentistEmail { get; set; }
         public string dentistTel { get; set; }
         public string password { get; set; }
         public System.DateTime registrationDate { get; set; }
-        public string availableDays { get; set; }
     }
 }

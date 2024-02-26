@@ -19,16 +19,15 @@
           <Key>
             <PropertyRef Name="appointmentID" />
           </Key>
-          <Property Name="appointmentID" Type="int" Nullable="false" />
-          <Property Name="dentalProcedure" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="dentistID" Type="int" Nullable="false" />
-          <Property Name="patientID" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="appointmentID" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dentalProcedure" Type="varchar" MaxLength="255" />
+          <Property Name="patientName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="appointmentDate" Type="date" Nullable="false" />
           <Property Name="appointmentTime" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="bookingDate" Type="date" Nullable="false" />
-          <Property Name="appointmentStatus" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="dentistStatus" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="patientTel" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="bookingMadeOn" Type="datetime" Nullable="false" />
+          <Property Name="appointmentStatus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="dentistID" Type="varchar" MaxLength="255" />
+          <Property Name="patientTel" Type="varchar" MaxLength="13" Nullable="false" />
         </EntityType>
         <EntityType Name="dentalProcedure_Table">
           <Key>
@@ -41,13 +40,12 @@
           <Key>
             <PropertyRef Name="dentistID" />
           </Key>
-          <Property Name="dentistID" Type="int" Nullable="false" />
+          <Property Name="dentistID" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="dentistName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="dentistEmail" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="dentistTel" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="dentistTel" Type="varchar" MaxLength="13" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="registrationDate" Type="smalldatetime" Nullable="false" />
-          <Property Name="availableDays" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="registrationDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="diagnosis_Table">
           <Key>
@@ -70,129 +68,111 @@ warning 6002: The table/view 'DentalClinicDb.dbo.insurance_Table' does not have 
           <Property Name="insuranceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="insuranceName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="patient_Table">
           <Key>
             <PropertyRef Name="patientID" />
-            <PropertyRef Name="patientName" />
-            <PropertyRef Name="gender" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="patientTel" />
-            <PropertyRef Name="registrationDate" />
-            <PropertyRef Name="insuranceID" />
-            <PropertyRef Name="residence" />
           </Key>
           <Property Name="patientID" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="patientName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="gender" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="patientTel" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="patientTel" Type="varchar" MaxLength="13" />
           <Property Name="registrationDate" Type="date" Nullable="false" />
           <Property Name="insuranceID" Type="int" Nullable="false" />
           <Property Name="residence" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK_appointment_Table_appointment_Table">
-          <End Role="appointment_Table" Type="Self.appointment_Table" Multiplicity="1" />
-          <End Role="appointment_Table1" Type="Self.appointment_Table" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="appointment_Table">
-              <PropertyRef Name="appointmentID" />
-            </Principal>
-            <Dependent Role="appointment_Table1">
-              <PropertyRef Name="appointmentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="DentalClinicDbModelStoreContainer">
           <EntitySet Name="admin_Table" EntityType="Self.admin_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="appointment_Table" EntityType="Self.appointment_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dentalProcedure_Table" EntityType="Self.dentalProcedure_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dentist_Table" EntityType="Self.dentist_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="diagnosis_Table" EntityType="Self.diagnosis_Table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="patient_Table" EntityType="Self.patient_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="insurance_Table" EntityType="Self.insurance_Table" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [insurance_Table].[insuranceID] AS [insuranceID], 
     [insurance_Table].[insuranceName] AS [insuranceName]
     FROM [dbo].[insurance_Table] AS [insurance_Table]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="patient_Table" EntityType="Self.patient_Table" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [patient_Table].[patientID] AS [patientID], 
-    [patient_Table].[patientName] AS [patientName], 
-    [patient_Table].[gender] AS [gender], 
-    [patient_Table].[email] AS [email], 
-    [patient_Table].[patientTel] AS [patientTel], 
-    [patient_Table].[registrationDate] AS [registrationDate], 
-    [patient_Table].[insuranceID] AS [insuranceID], 
-    [patient_Table].[residence] AS [residence]
-    FROM [dbo].[patient_Table] AS [patient_Table]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK_appointment_Table_appointment_Table" Association="Self.FK_appointment_Table_appointment_Table">
-            <End Role="appointment_Table" EntitySet="appointment_Table" />
-            <End Role="appointment_Table1" EntitySet="appointment_Table" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DentalClinicDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DentalClinicDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admin_Table" EntityType="DentalClinicDbModel.admin_Table" />
+          <EntitySet Name="appointment_Table" EntityType="DentalClinicDbModel.appointment_Table" />
+          <EntitySet Name="dentalProcedure_Table" EntityType="DentalClinicDbModel.dentalProcedure_Table" />
+          <EntitySet Name="dentist_Table" EntityType="DentalClinicDbModel.dentist_Table" />
+          <EntitySet Name="diagnosis_Table" EntityType="DentalClinicDbModel.diagnosis_Table" />
+          <EntitySet Name="patient_Table" EntityType="DentalClinicDbModel.patient_Table" />
+          <EntitySet Name="insurance_Table" EntityType="DentalClinicDbModel.insurance_Table" />
+        </EntityContainer>
         <EntityType Name="admin_Table">
           <Key>
             <PropertyRef Name="adminID" />
           </Key>
           <Property Name="adminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="adminTel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="adminTel" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="appointment_Table">
           <Key>
             <PropertyRef Name="appointmentID" />
           </Key>
-          <Property Name="appointmentID" Type="Int32" Nullable="false" />
-          <Property Name="dentalProcedure" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="dentistID" Type="Int32" Nullable="false" />
-          <Property Name="patientID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="appointmentID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dentalProcedure" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="patientName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="appointmentDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="appointmentTime" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bookingDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="appointmentStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="dentistStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="patientTel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="appointment_Table1" Relationship="DentalClinicDbModel.FK_appointment_Table_appointment_Table" FromRole="appointment_Table" ToRole="appointment_Table1" />
-          <NavigationProperty Name="appointment_Table2" Relationship="DentalClinicDbModel.FK_appointment_Table_appointment_Table" FromRole="appointment_Table1" ToRole="appointment_Table" />
+          <Property Name="appointmentTime" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="bookingMadeOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="appointmentStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dentistID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="patientTel" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="dentalProcedure_Table">
           <Key>
             <PropertyRef Name="procedureID" />
           </Key>
           <Property Name="procedureID" Type="Int32" Nullable="false" />
-          <Property Name="procedureType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="procedureType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="dentist_Table">
           <Key>
             <PropertyRef Name="dentistID" />
           </Key>
-          <Property Name="dentistID" Type="Int32" Nullable="false" />
-          <Property Name="dentistName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="dentistEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="dentistTel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dentistID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dentistName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dentistEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dentistTel" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="registrationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="availableDays" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="diagnosis_Table">
           <Key>
             <PropertyRef Name="diagnosisID" />
           </Key>
           <Property Name="diagnosisID" Type="Int32" Nullable="false" />
-          <Property Name="patientID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="patientID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="procedureID" Type="Int32" Nullable="false" />
-          <Property Name="diagnosisDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="diagnosisDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="diagnosisDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="dentistID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="patient_Table">
+          <Key>
+            <PropertyRef Name="patientID" />
+          </Key>
+          <Property Name="patientID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="patientName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="gender" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="patientTel" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="registrationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="insuranceID" Type="Int32" Nullable="false" />
+          <Property Name="residence" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="insurance_Table">
           <Key>
@@ -200,54 +180,9 @@ warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a 
             <PropertyRef Name="insuranceName" />
           </Key>
           <Property Name="insuranceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="insuranceName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="insuranceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="patient_Table">
-          <Key>
-            <PropertyRef Name="patientID" />
-            <PropertyRef Name="patientName" />
-            <PropertyRef Name="gender" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="patientTel" />
-            <PropertyRef Name="registrationDate" />
-            <PropertyRef Name="insuranceID" />
-            <PropertyRef Name="residence" />
-          </Key>
-          <Property Name="patientID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="patientName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="patientTel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="registrationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="insuranceID" Type="Int32" Nullable="false" />
-          <Property Name="residence" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityContainer Name="DentalClinicDbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="admin_Table" EntityType="Self.admin_Table" />
-          <EntitySet Name="appointment_Table" EntityType="Self.appointment_Table" />
-          <EntitySet Name="dentalProcedure_Table" EntityType="Self.dentalProcedure_Table" />
-          <EntitySet Name="dentist_Table" EntityType="Self.dentist_Table" />
-          <EntitySet Name="diagnosis_Table" EntityType="Self.diagnosis_Table" />
-          <EntitySet Name="insurance_Table" EntityType="Self.insurance_Table" />
-          <EntitySet Name="patient_Table" EntityType="Self.patient_Table" />
-          <AssociationSet Name="FK_appointment_Table_appointment_Table" Association="DentalClinicDbModel.FK_appointment_Table_appointment_Table">
-            <End Role="appointment_Table" EntitySet="appointment_Table" />
-            <End Role="appointment_Table1" EntitySet="appointment_Table" />
-          </AssociationSet>
-        </EntityContainer>
-        <Association Name="FK_appointment_Table_appointment_Table">
-          <End Type="DentalClinicDbModel.appointment_Table" Role="appointment_Table" Multiplicity="1" />
-          <End Type="DentalClinicDbModel.appointment_Table" Role="appointment_Table1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="appointment_Table">
-              <PropertyRef Name="appointmentID" />
-            </Principal>
-            <Dependent Role="appointment_Table1">
-              <PropertyRef Name="appointmentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -256,82 +191,80 @@ warning 6002: The table/view 'DentalClinicDb.dbo.patient_Table' does not have a 
           <EntitySetMapping Name="admin_Table">
             <EntityTypeMapping TypeName="DentalClinicDbModel.admin_Table">
               <MappingFragment StoreEntitySet="admin_Table">
-                <ScalarProperty Name="adminID" ColumnName="adminID" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="adminTel" ColumnName="adminTel" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="adminID" ColumnName="adminID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="appointment_Table">
             <EntityTypeMapping TypeName="DentalClinicDbModel.appointment_Table">
               <MappingFragment StoreEntitySet="appointment_Table">
-                <ScalarProperty Name="appointmentID" ColumnName="appointmentID" />
-                <ScalarProperty Name="dentalProcedure" ColumnName="dentalProcedure" />
-                <ScalarProperty Name="dentistID" ColumnName="dentistID" />
-                <ScalarProperty Name="patientID" ColumnName="patientID" />
-                <ScalarProperty Name="appointmentDate" ColumnName="appointmentDate" />
-                <ScalarProperty Name="appointmentTime" ColumnName="appointmentTime" />
-                <ScalarProperty Name="bookingDate" ColumnName="bookingDate" />
-                <ScalarProperty Name="appointmentStatus" ColumnName="appointmentStatus" />
-                <ScalarProperty Name="dentistStatus" ColumnName="dentistStatus" />
                 <ScalarProperty Name="patientTel" ColumnName="patientTel" />
+                <ScalarProperty Name="dentistID" ColumnName="dentistID" />
+                <ScalarProperty Name="appointmentStatus" ColumnName="appointmentStatus" />
+                <ScalarProperty Name="bookingMadeOn" ColumnName="bookingMadeOn" />
+                <ScalarProperty Name="appointmentTime" ColumnName="appointmentTime" />
+                <ScalarProperty Name="appointmentDate" ColumnName="appointmentDate" />
+                <ScalarProperty Name="patientName" ColumnName="patientName" />
+                <ScalarProperty Name="dentalProcedure" ColumnName="dentalProcedure" />
+                <ScalarProperty Name="appointmentID" ColumnName="appointmentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="dentalProcedure_Table">
             <EntityTypeMapping TypeName="DentalClinicDbModel.dentalProcedure_Table">
               <MappingFragment StoreEntitySet="dentalProcedure_Table">
-                <ScalarProperty Name="procedureID" ColumnName="procedureID" />
                 <ScalarProperty Name="procedureType" ColumnName="procedureType" />
+                <ScalarProperty Name="procedureID" ColumnName="procedureID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="dentist_Table">
             <EntityTypeMapping TypeName="DentalClinicDbModel.dentist_Table">
               <MappingFragment StoreEntitySet="dentist_Table">
-                <ScalarProperty Name="dentistID" ColumnName="dentistID" />
-                <ScalarProperty Name="dentistName" ColumnName="dentistName" />
-                <ScalarProperty Name="dentistEmail" ColumnName="dentistEmail" />
-                <ScalarProperty Name="dentistTel" ColumnName="dentistTel" />
-                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="registrationDate" ColumnName="registrationDate" />
-                <ScalarProperty Name="availableDays" ColumnName="availableDays" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="dentistTel" ColumnName="dentistTel" />
+                <ScalarProperty Name="dentistEmail" ColumnName="dentistEmail" />
+                <ScalarProperty Name="dentistName" ColumnName="dentistName" />
+                <ScalarProperty Name="dentistID" ColumnName="dentistID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="diagnosis_Table">
             <EntityTypeMapping TypeName="DentalClinicDbModel.diagnosis_Table">
               <MappingFragment StoreEntitySet="diagnosis_Table">
-                <ScalarProperty Name="diagnosisID" ColumnName="diagnosisID" />
-                <ScalarProperty Name="patientID" ColumnName="patientID" />
-                <ScalarProperty Name="procedureID" ColumnName="procedureID" />
-                <ScalarProperty Name="diagnosisDescription" ColumnName="diagnosisDescription" />
-                <ScalarProperty Name="diagnosisDate" ColumnName="diagnosisDate" />
                 <ScalarProperty Name="dentistID" ColumnName="dentistID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="insurance_Table">
-            <EntityTypeMapping TypeName="DentalClinicDbModel.insurance_Table">
-              <MappingFragment StoreEntitySet="insurance_Table">
-                <ScalarProperty Name="insuranceID" ColumnName="insuranceID" />
-                <ScalarProperty Name="insuranceName" ColumnName="insuranceName" />
+                <ScalarProperty Name="diagnosisDate" ColumnName="diagnosisDate" />
+                <ScalarProperty Name="diagnosisDescription" ColumnName="diagnosisDescription" />
+                <ScalarProperty Name="procedureID" ColumnName="procedureID" />
+                <ScalarProperty Name="patientID" ColumnName="patientID" />
+                <ScalarProperty Name="diagnosisID" ColumnName="diagnosisID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="patient_Table">
             <EntityTypeMapping TypeName="DentalClinicDbModel.patient_Table">
               <MappingFragment StoreEntitySet="patient_Table">
-                <ScalarProperty Name="patientID" ColumnName="patientID" />
-                <ScalarProperty Name="patientName" ColumnName="patientName" />
-                <ScalarProperty Name="gender" ColumnName="gender" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="patientTel" ColumnName="patientTel" />
-                <ScalarProperty Name="registrationDate" ColumnName="registrationDate" />
-                <ScalarProperty Name="insuranceID" ColumnName="insuranceID" />
                 <ScalarProperty Name="residence" ColumnName="residence" />
+                <ScalarProperty Name="insuranceID" ColumnName="insuranceID" />
+                <ScalarProperty Name="registrationDate" ColumnName="registrationDate" />
+                <ScalarProperty Name="patientTel" ColumnName="patientTel" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="patientName" ColumnName="patientName" />
+                <ScalarProperty Name="patientID" ColumnName="patientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="insurance_Table">
+            <EntityTypeMapping TypeName="DentalClinicDbModel.insurance_Table">
+              <MappingFragment StoreEntitySet="insurance_Table">
+                <ScalarProperty Name="insuranceName" ColumnName="insuranceName" />
+                <ScalarProperty Name="insuranceID" ColumnName="insuranceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

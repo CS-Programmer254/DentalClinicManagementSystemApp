@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Splashscreen));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,7 +47,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 20F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.HotPink;
-            this.label1.Location = new System.Drawing.Point(56, 83);
+            this.label1.Location = new System.Drawing.Point(217, 77);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(243, 48);
             this.label1.TabIndex = 0;
@@ -57,7 +58,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Mistral", 15F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label2.Location = new System.Drawing.Point(67, 159);
+            this.label2.Location = new System.Drawing.Point(268, 207);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(179, 35);
             this.label2.TabIndex = 1;
@@ -68,7 +69,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Mistral", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label3.Location = new System.Drawing.Point(21, 204);
+            this.label3.Location = new System.Drawing.Point(188, 365);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(278, 48);
             this.label3.TabIndex = 2;
@@ -80,7 +81,7 @@
             this.label4.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.label4.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label4.Location = new System.Drawing.Point(25, 402);
+            this.label4.Location = new System.Drawing.Point(220, 550);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(274, 26);
             this.label4.TabIndex = 3;
@@ -93,9 +94,9 @@
             this.panel1.Controls.Add(this.countLabel);
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel1.ForeColor = System.Drawing.Color.White;
-            this.panel1.Location = new System.Drawing.Point(110, 298);
+            this.panel1.Location = new System.Drawing.Point(301, 294);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(90, 69);
+            this.panel1.Size = new System.Drawing.Size(91, 68);
             this.panel1.TabIndex = 4;
             // 
             // label6
@@ -130,18 +131,20 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.panel2.BackColor = System.Drawing.SystemColors.Highlight;
             this.panel2.Location = new System.Drawing.Point(-2, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(333, 53);
+            this.panel2.Size = new System.Drawing.Size(590, 53);
             this.panel2.TabIndex = 5;
             // 
-            // splashscreen
+            // Splashscreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(331, 455);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(588, 663);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
@@ -149,7 +152,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "splashscreen";
+            this.Name = "Splashscreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SplashScreen";
             this.panel1.ResumeLayout(false);

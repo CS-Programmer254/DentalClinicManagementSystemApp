@@ -30,7 +30,7 @@ namespace DentalClinicManagementSystemApp
         public virtual DbSet<dentalProcedure_Table> dentalProcedure_Table { get; set; }
         public virtual DbSet<dentist_Table> dentist_Table { get; set; }
         public virtual DbSet<diagnosis_Table> diagnosis_Table { get; set; }
-        public virtual DbSet<insurance_Table> insurance_Table { get; set; }
         public virtual DbSet<patient_Table> patient_Table { get; set; }
+        public virtual DbSet<insurance_Table> insurance_Table { get; set; }
     }
 }

@@ -14,18 +14,14 @@ namespace DentalClinicManagementSystemApp
     
     public partial class appointment_Table
     {
-        public int appointmentID { get; set; }
+        public string appointmentID { get; set; }
         public string dentalProcedure { get; set; }
-        public int dentistID { get; set; }
-        public string patientID { get; set; }
+        public string patientName { get; set; }
         public System.DateTime appointmentDate { get; set; }
         public string appointmentTime { get; set; }
-        public System.DateTime bookingDate { get; set; }
+        public System.DateTime bookingMadeOn { get; set; }
         public string appointmentStatus { get; set; }
-        public string dentistStatus { get; set; }
+        public string dentistID { get; set; }
         public string patientTel { get; set; }
-    
-        public virtual appointment_Table appointment_Table1 { get; set; }
-        public virtual appointment_Table appointment_Table2 { get; set; }
     }
 }
