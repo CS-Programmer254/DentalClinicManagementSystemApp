@@ -301,6 +301,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BookAppointment";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Book Appointment";
             this.Load += new System.EventHandler(this.BookAppointment_Load);
             this.groupBox1.ResumeLayout(false);

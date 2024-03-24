@@ -1,26 +1,38 @@
 ﻿using System;
-using System.Data;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DentalClinicManagementSystemApp.Services;
 
 namespace DentalClinicManagementSystemApp
 {
     public partial class Dashboard : Form
     {
         private readonly DentalClinicDbEntities _dentalClinicDbEntities;
-        NewPatientForm newPatientForm;
-        BookAppointment bookAppointment;
+        private readonly AdminLogin _adminLogin;
+        private NewPatientForm newPatientForm;
+        private BookAppointment bookAppointment;
+        private NewDentist newDentistForm;
+        private readonly ISendMail _sendMail;
         public string NavigationButton { get; set; }
-        public Dashboard()
+
+        public Dashboard(ISendMail sendMail)
         {
             InitializeComponent();
             _dentalClinicDbEntities = new DentalClinicDbEntities();
             NavigationButton = "Patients";
-
+            _sendMail = sendMail;
         }
+
+        public Dashboard(AdminLogin adminLogin)
+        {
+            InitializeComponent();
+            _dentalClinicDbEntities = new DentalClinicDbEntities();
+            NavigationButton = "Patients";
+            _adminLogin = adminLogin;
+        }
+
         private async void patientsBtn_Click(object sender, EventArgs e)
         {
             try
@@ -31,7 +43,6 @@ namespace DentalClinicManagementSystemApp
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -43,11 +54,9 @@ namespace DentalClinicManagementSystemApp
                 groupBox.Text = "Doctors List View";
                 NavigationButton = "Doctors";
                 await PopulateGridView(NavigationButton);
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -59,14 +68,11 @@ namespace DentalClinicManagementSystemApp
                 groupBox.Text = "Appointment Bookings";
                 NavigationButton = "Appointments";
                 await PopulateGridView(NavigationButton);
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-           
         }
 
         private async void insurancesBtn_ClickAsync(object sender, EventArgs e)
@@ -79,10 +85,8 @@ namespace DentalClinicManagementSystemApp
             }
             catch (Exception)
             {
-
                 throw;
             }
-           
         }
 
         private async void billingBtn_ClickAsync(object sender, EventArgs e)
@@ -92,11 +96,9 @@ namespace DentalClinicManagementSystemApp
                 groupBox.Text = "Recent Billings";
                 NavigationButton = "Billings";
                 await PopulateGridView(NavigationButton);
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -105,11 +107,11 @@ namespace DentalClinicManagementSystemApp
         {
             await PopulateGridView(NavigationButton);
         }
+
         public void FetchPatients()
         {
             try
             {
-                // var patients =await  _dentalClinicDbEntities.patient_Table.ToListAsync();
                 var patients = _dentalClinicDbEntities.patient_Table.Select(p => new
                 {
                     FileNo = p.patientID,
@@ -122,56 +124,52 @@ namespace DentalClinicManagementSystemApp
                     Residence = p.residence,
                 }).ToList();
                 DataGridView.DataSource = patients;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
+
         public async Task FetchAppointmentsAsync()
         {
             try
             {
                 var appointments = await _dentalClinicDbEntities.appointment_Table.ToListAsync();
                 DataGridView.DataSource = appointments;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
+
         public async Task FetchDoctorsAsync()
         {
             try
             {
                 var doctors = await _dentalClinicDbEntities.dentist_Table.ToListAsync();
                 DataGridView.DataSource = doctors;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
+
         public async Task FetchInsurancesAsync()
         {
             try
             {
                 var insurances = await _dentalClinicDbEntities.insurance_Table.ToListAsync();
                 DataGridView.DataSource = insurances;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
+
         private async Task PopulateGridView(string navigationButton)
         {
             try
@@ -180,7 +178,6 @@ namespace DentalClinicManagementSystemApp
                 {
                     FetchPatients();
                     return;
-
                 }
                 else if (string.Equals(navigationButton, "Doctors", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -199,15 +196,13 @@ namespace DentalClinicManagementSystemApp
                 }
                 else if (string.Equals(navigationButton, "Billings", StringComparison.CurrentCultureIgnoreCase))
                 {
-
+                    // Handle billing button
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
 
         private void newPatientLabel_Click(object sender, EventArgs e)
@@ -217,14 +212,12 @@ namespace DentalClinicManagementSystemApp
                 if (bookAppointment != null)
                 {
                     bookAppointment.Close();
-
                 }
-                newPatientForm = new NewPatientForm();
+                newPatientForm = new NewPatientForm(_sendMail);
                 newPatientForm.Show();
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -236,16 +229,13 @@ namespace DentalClinicManagementSystemApp
                 if (newPatientForm != null)
                 {
                     newPatientForm.Close();
-
                 }
                 this.Close();
-                bookAppointment = new BookAppointment();
+                bookAppointment = new BookAppointment(_sendMail);
                 bookAppointment.Show();
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -254,21 +244,16 @@ namespace DentalClinicManagementSystemApp
         {
             try
             {
-
                 var selectedRowID = (string)DataGridView.SelectedRows[0].Cells["FileNo"].Value;
                 var patient = _dentalClinicDbEntities.patient_Table.FirstOrDefault(p => p.patientID == selectedRowID);
                 this.Close();
-                newPatientForm = new NewPatientForm(patient);
+                newPatientForm = new NewPatientForm(_sendMail, patient);
                 newPatientForm.Show();
-              
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show($"You have not selected any row\n{ex.Message}");
             }
-
-
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
@@ -282,16 +267,27 @@ namespace DentalClinicManagementSystemApp
                     _dentalClinicDbEntities.patient_Table.Remove(patient);
                     _dentalClinicDbEntities.SaveChanges();
                     this.Close();
-                    new Dashboard().Show();
+                    new Dashboard(_sendMail).Show();
                     MessageBox.Show("Patient Deleted Successfully");
                 }
-               
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show($"Please select a row to delete.\n{ex.Message}");
             }
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+           
+            if (newDentistForm!=null)
+            {
+                newDentistForm.Close();
+            }
+            this.Close();
+            newDentistForm = new NewDentist(_sendMail);
+            newDentistForm.Show();
+        
         }
     }
 }

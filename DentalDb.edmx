@@ -81,6 +81,16 @@ warning 6002: The table/view 'DentalClinicDb.dbo.insurance_Table' does not have 
           <Property Name="insuranceID" Type="int" Nullable="false" />
           <Property Name="residence" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DentalClinicDb.dbo.userRoles_Table' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="userRoles_Table">
+          <Key>
+            <PropertyRef Name="userID" />
+            <PropertyRef Name="roleID" />
+          </Key>
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="roleID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="DentalClinicDbModelStoreContainer">
           <EntitySet Name="admin_Table" EntityType="Self.admin_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="appointment_Table" EntityType="Self.appointment_Table" Schema="dbo" store:Type="Tables" />
@@ -93,6 +103,12 @@ warning 6002: The table/view 'DentalClinicDb.dbo.insurance_Table' does not have 
     [insurance_Table].[insuranceID] AS [insuranceID], 
     [insurance_Table].[insuranceName] AS [insuranceName]
     FROM [dbo].[insurance_Table] AS [insurance_Table]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="userRoles_Table" EntityType="Self.userRoles_Table" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [userRoles_Table].[userID] AS [userID], 
+    [userRoles_Table].[roleID] AS [roleID]
+    FROM [dbo].[userRoles_Table] AS [userRoles_Table]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -107,6 +123,7 @@ warning 6002: The table/view 'DentalClinicDb.dbo.insurance_Table' does not have 
           <EntitySet Name="diagnosis_Table" EntityType="DentalClinicDbModel.diagnosis_Table" />
           <EntitySet Name="patient_Table" EntityType="DentalClinicDbModel.patient_Table" />
           <EntitySet Name="insurance_Table" EntityType="DentalClinicDbModel.insurance_Table" />
+          <EntitySet Name="userRoles_Table" EntityType="DentalClinicDbModel.userRoles_Table" />
         </EntityContainer>
         <EntityType Name="admin_Table">
           <Key>
@@ -181,6 +198,14 @@ warning 6002: The table/view 'DentalClinicDb.dbo.insurance_Table' does not have 
           </Key>
           <Property Name="insuranceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="insuranceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="userRoles_Table">
+          <Key>
+            <PropertyRef Name="userID" />
+            <PropertyRef Name="roleID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="roleID" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -265,6 +290,14 @@ warning 6002: The table/view 'DentalClinicDb.dbo.insurance_Table' does not have 
               <MappingFragment StoreEntitySet="insurance_Table">
                 <ScalarProperty Name="insuranceName" ColumnName="insuranceName" />
                 <ScalarProperty Name="insuranceID" ColumnName="insuranceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userRoles_Table">
+            <EntityTypeMapping TypeName="DentalClinicDbModel.userRoles_Table">
+              <MappingFragment StoreEntitySet="userRoles_Table">
+                <ScalarProperty Name="roleID" ColumnName="roleID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DentalClinicManagementSystemApp.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,11 +18,12 @@ namespace DentalClinicManagementSystemApp
     {
         private readonly DentalClinicDbEntities _dentalClinicDbEntities;
         public string appointmentID;
-        
-        public BookAppointment()
+        private readonly ISendMail _sendMail;
+        public BookAppointment(ISendMail sendMail)
         {
             InitializeComponent();
             _dentalClinicDbEntities = new DentalClinicDbEntities();
+            _sendMail = sendMail;
         }
 
         private void BookAppointment_Load(object sender, EventArgs e)
@@ -44,7 +46,8 @@ namespace DentalClinicManagementSystemApp
                 var patientName = tbPatientName.Text;
                 var dentalProcedure=cbDentalProcedure.Text;
                 var dentistName= cbDentist.Text;
-                var telephone = ValidatePhoneNumber.TransformPhoneNumber(tbTelephone.Text.Trim());
+                //var telephone = ValidatePhoneNumber.TransformPhoneNumber(tbTelephone.Text.Trim());
+                var telephone = tbTelephone.Text.Trim();
                 var appointmentDate=cbAppointmentDate.Text;
                 var appointmentTime=cbAppointmentTime.Text;
                 var bookingMadeOn = DateTime.Now;
@@ -106,7 +109,15 @@ namespace DentalClinicManagementSystemApp
                     _dentalClinicDbEntities.appointment_Table.Add(newAppointment);
                     _dentalClinicDbEntities.SaveChanges();
                     appointmentID = PopulateAppointment();
-                    MessageBox.Show($"Appointment Booked Successfully");
+                    MessageBox.Show($"Appointment Booked Successfully!");
+                    
+                    var sent = _sendMail.SendEmail("eng.stanleyoduor@gmail.com", false,appointmentTime,dentalProcedure,appointmentDate);
+                  
+                    if (sent)
+                    {
+                        MessageBox.Show("Email with appointment details has been sent!");
+                    }
+                    
 
                 }
 
@@ -154,7 +165,7 @@ namespace DentalClinicManagementSystemApp
         private void btnBack_Click(object sender, EventArgs e)
         {
             this.Close();
-            new Dashboard().Show();
+            new Dashboard(_sendMail).Show();
         }
         private void PopulateDentistComboBox()
         {

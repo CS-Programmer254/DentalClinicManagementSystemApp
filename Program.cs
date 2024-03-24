@@ -1,5 +1,10 @@
-﻿using System;
+﻿using DentalClinicManagementSystemApp.Services;
+using DentalClinicManagementSystemApp.Settings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +21,29 @@ namespace DentalClinicManagementSystemApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Splashscreen());
+         
+            var services = new ServiceCollection();
+            //MailSettings _mailSettings = new MailSettings();
+
+            ConfigureServices(services);
+            using (var serviceProvider = services.BuildServiceProvider())
+            {
+                //Application.Run(serviceProvider.GetRequiredService<BookAppointment>());
+                Application.Run(serviceProvider.GetRequiredService<Splashscreen>());
+
+            }
+          
+            //ISendMail _sendMail = new SendMail(_mailSettings); 
+            //Application.Run(new Splashscreen(_sendMail));
+        }
+        private static void ConfigureServices(IServiceCollection services)
+        {
+          
+            //services.AddTransient<MailSettings>();
+            services.AddSingleton<ISendMail,SendMail>();
+            services.AddTransient<BookAppointment>();
+            services.AddTransient<Splashscreen>();
+            
         }
     }
 }

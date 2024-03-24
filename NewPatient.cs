@@ -1,41 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Policy;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DentalClinicManagementSystemApp.Services;
 
 namespace DentalClinicManagementSystemApp
 {
     public partial class NewPatientForm : Form
     {
         private readonly DentalClinicDbEntities _dentalClinicDbEntities;
-        public int fileCount;
+        private readonly ISendMail _sendMail;
         private bool isEditMode;
-        public string fileToUpdate;
-        public NewPatientForm()
+        private string fileToUpdate;
+
+        public NewPatientForm(ISendMail sendMail)
         {
             InitializeComponent();
             _dentalClinicDbEntities = new DentalClinicDbEntities();
-            isEditMode = false; 
+            _sendMail = sendMail;
+            isEditMode = false;
         }
 
-        public NewPatientForm(patient_Table patientToEdit)
+        public NewPatientForm(ISendMail sendMail, patient_Table patientToEdit)
         {
             InitializeComponent();
             _dentalClinicDbEntities = new DentalClinicDbEntities();
+            _sendMail = sendMail;
             this.Text = "Edit Patient Details";
-            this.ClearPatientBtn.Visible= false;
+            this.ClearPatientBtn.Visible = false;
             SavePatientBtn.Text = "Edit";
             fileToUpdate = patientToEdit.patientID.ToString();
             PopulateEditFields(patientToEdit);
@@ -45,26 +40,25 @@ namespace DentalClinicManagementSystemApp
         private void PopulateEditFields(patient_Table patient)
         {
             tbPatientName.Text = patient.patientName;
-            tbEmail.Text=patient.email;
+            tbEmail.Text = patient.email;
             tbTelephone.Text = patient.patientTel;
             tbResidence.Text = patient.residence;
             cbGender.Text = patient.gender;
-            var insuranceName= _dentalClinicDbEntities.insurance_Table
-                   .Where(i => i.insuranceID==patient.insuranceID)
+            var insuranceName = _dentalClinicDbEntities.insurance_Table
+                   .Where(i => i.insuranceID == patient.insuranceID)
                    .Select(i => i.insuranceName)
                    .FirstOrDefault();
             cbInsurance.Text = insuranceName;
-
         }
 
         private void SavePatientBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                var fileNo=cbFileNo.Text;
-                var patientName=tbPatientName.Text;
-                var email=tbEmail.Text;
-                var telephone = ValidatePhoneNumber.TransformPhoneNumber(tbTelephone.Text.Trim());
+                var fileNo = cbFileNo.Text;
+                var patientName = tbPatientName.Text;
+                var email = tbEmail.Text;
+                var telephone = tbTelephone.Text.Trim();
                 var insurance = cbInsurance.Text;
                 var residence = tbResidence.Text;
                 var gender = cbGender.Text;
@@ -73,7 +67,7 @@ namespace DentalClinicManagementSystemApp
                     || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(telephone)
                     || string.IsNullOrWhiteSpace(insurance)
                     || string.IsNullOrWhiteSpace(residence)
-                     || string.IsNullOrWhiteSpace(gender))
+                    || string.IsNullOrWhiteSpace(gender))
                 {
                     MessageBox.Show($"Please fill all the fields!");
                     return;
@@ -87,17 +81,12 @@ namespace DentalClinicManagementSystemApp
 
                 if (!ValidateEmailAddress.IsValidEmail(email))
                 {
-                    MessageBox.Show($"{email.ToUpperInvariant()} is not a valid email address.Please enter a valid email");
+                    MessageBox.Show($"{email.ToUpperInvariant()} is not a valid email address. Please enter a valid email");
                     return;
                 }
 
-                //var insuranceID = _dentalClinicDbEntities.insurance_Table
-                //    .Where(i => string.Equals(i.insuranceName, insurance, StringComparison.OrdinalIgnoreCase))
-                //    .Select(i => i.insuranceID)
-                //    .FirstOrDefault();
-
                 var insuranceID = _dentalClinicDbEntities.insurance_Table
-                    .Where(i =>i.insuranceName==insurance)
+                    .Where(i => i.insuranceName == insurance)
                     .Select(i => i.insuranceID)
                     .FirstOrDefault();
 
@@ -113,27 +102,24 @@ namespace DentalClinicManagementSystemApp
                     residence = residence
                 };
 
-                if (newPatientData !=null)
+                if (newPatientData != null)
                 {
                     _dentalClinicDbEntities.patient_Table.AddOrUpdate(newPatientData);
                     _dentalClinicDbEntities.SaveChanges();
-                   
+
                     if (isEditMode)
                     {
                         MessageBox.Show($"Patient Updated successfully as :{patientName} with file number {fileNo}");
                         this.Close();
-                        new Dashboard().Show();
+                        new Dashboard(_sendMail).Show();
                     }
                     else
                     {
                         MessageBox.Show($"Patient Registered successfully as :{patientName} with file number {fileNo}");
                         this.Close();
-                        new Dashboard().Show();
+                        new Dashboard(_sendMail).Show();
                     }
                 }
-             
-               
-
             }
             catch (DbEntityValidationException ex)
             {
@@ -147,26 +133,23 @@ namespace DentalClinicManagementSystemApp
                             ve.PropertyName, ve.ErrorMessage);
                     }
                 }
-               
             }
-
         }
 
         private async void NewPatientForm_Load(object sender, EventArgs e)
         {
             try
             {
-                await LoadInsuranceCombox();
-                LoadFileNoCombox();
-
+                await LoadInsuranceComboBox();
+                LoadFileNoComboBox();
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        public async Task LoadInsuranceCombox()
+
+        public async Task LoadInsuranceComboBox()
         {
             try
             {
@@ -174,49 +157,39 @@ namespace DentalClinicManagementSystemApp
                 cbInsurance.DisplayMember = "insuranceName";
                 cbInsurance.ValueMember = "insuranceID";
                 cbInsurance.DataSource = insurances;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
-        public void LoadFileNoCombox()
+
+        public void LoadFileNoComboBox()
         {
             try
             {
                 ComboxItem comboxItem = new ComboxItem();
-                var fileNo = (!isEditMode) ? "ACDC " + Convert.ToString(GenerateFileNo()) :fileToUpdate;
-                comboxItem.Text =fileNo;
-                comboxItem.Value =fileNo;
+                var fileNo = (!isEditMode) ? "ACDC " + Convert.ToString(GenerateFileNo()) : fileToUpdate;
+                comboxItem.Text = fileNo;
+                comboxItem.Value = fileNo;
                 cbFileNo.Items.Add(comboxItem);
                 cbFileNo.SelectedIndex = 0;
-                // MessageBox.Show((cbFileNo.SelectedItem as ComboxItem).Value.ToString());
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
+
         private int GenerateFileNo()
         {
             try
             {
-               //var fileCount = _dentalClinicDbEntities.patient_Table.ToList().Count; 
-               // fileCount = Convert.ToInt32(fileCount)+1;
-               // return fileCount;
-               
-               var fileCount = Convert.ToInt32(_dentalClinicDbEntities.patient_Table.ToList().Count)+1;
+                var fileCount = Convert.ToInt32(_dentalClinicDbEntities.patient_Table.ToList().Count) + 1;
                 return fileCount;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -224,13 +197,12 @@ namespace DentalClinicManagementSystemApp
         private void ClearPatientBtn_Click(object sender, EventArgs e)
         {
             cbFileNo.Text = "";
-            tbPatientName.Text ="";
+            tbPatientName.Text = "";
             tbEmail.Text = "";
-            tbTelephone.Text ="";
-            tbResidence.Text ="";
-            cbGender.Text ="";
+            tbTelephone.Text = "";
+            tbResidence.Text = "";
+            cbGender.Text = "";
             cbInsurance.Text = "";
-
         }
     }
 }

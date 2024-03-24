@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DentalClinicManagementSystemApp.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +14,12 @@ namespace DentalClinicManagementSystemApp
 {
     public partial class Splashscreen : Form
     {
-        public Splashscreen()
+        private readonly ISendMail _sendMail;
+        public Splashscreen(ISendMail sendMail)
         {
             InitializeComponent();
+            _sendMail = sendMail;
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -23,7 +28,7 @@ namespace DentalClinicManagementSystemApp
             if (countLabel.Text=="100")
             {
                 this.Hide();
-                new AdminLogin().Show();
+                new AdminLogin(_sendMail).Show();
                
             }
         }
